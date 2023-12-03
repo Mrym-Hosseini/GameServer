@@ -1,5 +1,6 @@
 package com.university.nerdtaxi.gameserver.service;
 
+import com.university.nerdtaxi.gameserver.apiresponse.CreateUserResponse;
 import com.university.nerdtaxi.gameserver.repository.UserRepository;
 import com.university.nerdtaxi.gameserver.model.UserEntity;
 import com.university.nerdtaxi.gameserver.dto.UserDTO;
@@ -33,7 +34,8 @@ public class UserService {
             newUser.setUsername(username);
             userRepository.save(newUser);
             LOG.info("New User created successfully. User Id : " + newUser.getId());
-            return ResponseEntity.ok(newUser.getId());
+//            return ResponseEntity.ok(newUser.getId());
+            return ResponseEntity.ok(new CreateUserResponse(newUser.getId()));
         } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred : " + error.getMessage());
         }

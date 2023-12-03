@@ -1,6 +1,7 @@
 package com.university.nerdtaxi.gameserver.controller;
 
 import com.university.nerdtaxi.gameserver.service.UserService;
+import com.university.nerdtaxi.gameserver.apirequest.CreateUserRequest;
 
 import org.springframework.http.ResponseEntity;
 
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -27,9 +27,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(path = "/create/{username}")
-    public ResponseEntity<?> createUser(@PathVariable(name = "username") String username) {
-        return userService.createUser(username);
+    @PostMapping(path = "/create")
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest username) {
+        return userService.createUser(username.getUsername());
     }
 
     @GetMapping(path = "/get/{userId}")
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/get/leaderBoard")
-    public ResponseEntity<?> getLeaderBoard(){
+    public ResponseEntity<?> getLeaderBoard() {
         return userService.sortUsersScore();
     }
 
