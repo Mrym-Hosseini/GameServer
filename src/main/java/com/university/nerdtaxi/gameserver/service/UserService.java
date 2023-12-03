@@ -100,9 +100,9 @@ public class UserService {
 
     public ResponseEntity<?> sortUsersScore() {
         try {
-            List<UserEntity> userEntities = userRepository.findAllByOrderByScoreDesc();
-            List<UserDTO> userDTOS = covertToDtoList(userEntities);
-            return ResponseEntity.ok(userDTOS);
+            List<UserEntity> userEntities = userRepository.findByScoreGreaterThanOrderByScoreDesc(0);
+            List<UserDTO> userDTOs = covertToDtoList(userEntities);
+            return ResponseEntity.ok(userDTOs);
         } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred : " + error.getMessage());
         }

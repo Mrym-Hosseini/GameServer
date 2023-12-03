@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-    List<UserEntity> findAllByOrderByScoreDesc();
+    List<UserEntity> findByScoreGreaterThanOrderByScoreDesc(int score);
 }
