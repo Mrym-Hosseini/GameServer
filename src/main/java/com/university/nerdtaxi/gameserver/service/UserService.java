@@ -1,6 +1,8 @@
 package com.university.nerdtaxi.gameserver.service;
 
 import com.university.nerdtaxi.gameserver.apiresponse.CreateUserResponse;
+import com.university.nerdtaxi.gameserver.apiresponse.UpdateUsernameResponse;
+import com.university.nerdtaxi.gameserver.apiresponse.UpdateScoreResponse;
 import com.university.nerdtaxi.gameserver.repository.UserRepository;
 import com.university.nerdtaxi.gameserver.model.UserEntity;
 import com.university.nerdtaxi.gameserver.dto.UserDTO;
@@ -34,7 +36,6 @@ public class UserService {
             newUser.setUsername(username);
             userRepository.save(newUser);
             LOG.info("New User created successfully. User Id : " + newUser.getId());
-//            return ResponseEntity.ok(newUser.getId());
             return ResponseEntity.ok(new CreateUserResponse(newUser.getId()));
         } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred : " + error.getMessage());
@@ -55,14 +56,14 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<String> updateUserUsername(long userId, String username) {
+    public ResponseEntity<?> updateUserUsername(long userId, String username) {
         try {
             UserEntity user = userRepository.findById(String.valueOf(userId)).orElse(null);
             if (user != null) {
                 user.setUsername(username);
-                userRepository.save(user);
+                UserEntity updatedUser = userRepository.save(user);
                 LOG.info("Username of user for Id : " + userId + " updated successfully to : " + username);
-                return ResponseEntity.ok("Username of user for Id : " + userId + " updated successfully to : " + username);
+                return ResponseEntity.ok(new UpdateUsernameResponse(updatedUser.getId(), updatedUser.getUsername()));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found for Id : " + userId);
             }
@@ -71,13 +72,14 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<String> updateUserScore(long userId, int score) {
+    public ResponseEntity<?> updateUserScore(long userId, int score) {
         try {
             UserEntity user = userRepository.findById(String.valueOf(userId)).orElse(null);
             if (user != null) {
                 user.setScore(score);
-                userRepository.save(user);
-                return ResponseEntity.ok("Score of user : " + user.getUsername() + " updated successfully to : " + score);
+                UserEntity updatedUser = userRepository.save(user);
+                LOG.info("score of user : " + user.getUsername() + " updated successfully to : " + score);
+                return ResponseEntity.ok(new UpdateScoreResponse(updatedUser.getId(), updatedUser.getScore()));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found for Id : " + userId);
             }

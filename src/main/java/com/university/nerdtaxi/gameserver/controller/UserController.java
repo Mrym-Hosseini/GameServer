@@ -2,6 +2,9 @@ package com.university.nerdtaxi.gameserver.controller;
 
 import com.university.nerdtaxi.gameserver.service.UserService;
 import com.university.nerdtaxi.gameserver.apirequest.CreateUserRequest;
+import com.university.nerdtaxi.gameserver.apirequest.GetUserByIdRequest;
+import com.university.nerdtaxi.gameserver.apirequest.UpdateUsernameRequest;
+import com.university.nerdtaxi.gameserver.apirequest.UpdateScoreRequest;
 
 import org.springframework.http.ResponseEntity;
 
@@ -32,9 +35,9 @@ public class UserController {
         return userService.createUser(username.getUsername());
     }
 
-    @GetMapping(path = "/get/{userId}")
-    public ResponseEntity<?> getUserById(@PathVariable(name = "userId") long userId) {
-        return userService.getUserById(userId);
+    @GetMapping(path = "/getUser")
+    public ResponseEntity<?> getUserById(@RequestBody GetUserByIdRequest userId) {
+        return userService.getUserById(userId.getUserId());
     }
 
     @GetMapping(path = "/get/leaderBoard")
@@ -42,14 +45,14 @@ public class UserController {
         return userService.sortUsersScore();
     }
 
-    @PutMapping(path = "/updateUsername/{userId}/{username}")
-    public ResponseEntity<String> updateUserUsername(@PathVariable(name = "userId") long userId, @PathVariable(name = "username") String username) {
-        return userService.updateUserUsername(userId, username);
+    @PutMapping(path = "/updateUsername")
+    public ResponseEntity<?> updateUserUsername(@RequestBody UpdateUsernameRequest updateUsernameRequest) {
+        return userService.updateUserUsername(updateUsernameRequest.getUserId(), updateUsernameRequest.getUsername());
     }
 
-    @PutMapping(path = "/updateUserScore/{userId}/{score}")
-    public ResponseEntity<String> updateUserScore(@PathVariable(name = "userId") long userId, @PathVariable(name = "score") int score) {
-        return userService.updateUserScore(userId, score);
+    @PutMapping(path = "/updateUserScore")
+    public ResponseEntity<?> updateUserScore(@RequestBody UpdateScoreRequest updateScoreRequest) {
+        return userService.updateUserScore(updateScoreRequest.getUserId(), updateScoreRequest.getScore());
     }
 
     @DeleteMapping(path = "/delete/{userId}")
