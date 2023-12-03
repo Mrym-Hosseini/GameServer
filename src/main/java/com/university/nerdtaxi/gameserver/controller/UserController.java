@@ -5,6 +5,7 @@ import com.university.nerdtaxi.gameserver.apirequest.CreateUserRequest;
 import com.university.nerdtaxi.gameserver.apirequest.GetUserByIdRequest;
 import com.university.nerdtaxi.gameserver.apirequest.UpdateUsernameRequest;
 import com.university.nerdtaxi.gameserver.apirequest.UpdateScoreRequest;
+import com.university.nerdtaxi.gameserver.apirequest.DeleteUserByIdRequest;
 
 import org.springframework.http.ResponseEntity;
 
@@ -30,7 +31,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(path = "/create")
+    @PostMapping(path = "/createUser")
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequest username) {
         return userService.createUser(username.getUsername());
     }
@@ -46,18 +47,18 @@ public class UserController {
     }
 
     @PutMapping(path = "/updateUsername")
-    public ResponseEntity<?> updateUserUsername(@RequestBody UpdateUsernameRequest updateUsernameRequest) {
+    public ResponseEntity<String> updateUserUsername(@RequestBody UpdateUsernameRequest updateUsernameRequest) {
         return userService.updateUserUsername(updateUsernameRequest.getUserId(), updateUsernameRequest.getUsername());
     }
 
     @PutMapping(path = "/updateUserScore")
-    public ResponseEntity<?> updateUserScore(@RequestBody UpdateScoreRequest updateScoreRequest) {
+    public ResponseEntity<String> updateUserScore(@RequestBody UpdateScoreRequest updateScoreRequest) {
         return userService.updateUserScore(updateScoreRequest.getUserId(), updateScoreRequest.getScore());
     }
 
-    @DeleteMapping(path = "/delete/{userId}")
-    public ResponseEntity<String> deleteUserById(@PathVariable(name = "userId") long userId) {
-        return userService.deleteUserById(userId);
+    @DeleteMapping(path = "/deleteUser")
+    public ResponseEntity<String> deleteUserById(@RequestBody DeleteUserByIdRequest userId) {
+        return userService.deleteUserById(userId.getUserId());
     }
 
 }
