@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/create/{username}")
-    public ResponseEntity<String> createUser(@PathVariable(name = "username") String username) {
+    public ResponseEntity<?> createUser(@PathVariable(name = "username") String username) {
         return userService.createUser(username);
     }
 

@@ -4,6 +4,8 @@ import com.university.nerdtaxi.gameserver.repository.UserRepository;
 import com.university.nerdtaxi.gameserver.model.UserEntity;
 import com.university.nerdtaxi.gameserver.dto.UserDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,20 @@ public class UserService {
 
     private UserRepository userRepository;
 
+    private Logger LOG = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     public void userRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<String> createUser(String username) {
+    public ResponseEntity<?> createUser(String username) {
         try {
             UserEntity newUser = new UserEntity();
             newUser.setUsername(username);
             userRepository.save(newUser);
-            return ResponseEntity.ok("New User created successfully. User Id : " + newUser.getId());
+            LOG.info("New User created successfully. User Id : " + newUser.getId());
+            return ResponseEntity.ok(newUser.getId());
         } catch (Exception error) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred : " + error.getMessage());
         }
@@ -54,6 +59,7 @@ public class UserService {
             if (user != null) {
                 user.setUsername(username);
                 userRepository.save(user);
+                LOG.info("Username of user for Id : " + userId + " updated successfully to : " + username);
                 return ResponseEntity.ok("Username of user for Id : " + userId + " updated successfully to : " + username);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found for Id : " + userId);
