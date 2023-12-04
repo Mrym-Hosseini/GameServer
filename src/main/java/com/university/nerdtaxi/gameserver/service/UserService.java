@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private UserRepository userRepository; // Repository for UserEntity
 
     private Logger LOG = LoggerFactory.getLogger(UserService.class);
 
@@ -28,6 +28,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Create a new user with the specified username.
+     *
+     * @param username The username of the user to create
+     * @return ResponseEntity containing the CreateUserResponse or an error message
+     */
     public ResponseEntity<?> createUser(String username) {
         try {
             UserEntity newUser = new UserEntity();
@@ -40,6 +46,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Retrieve a user by their ID.
+     *
+     * @param userId The ID of the user to retrieve
+     * @return ResponseEntity containing the UserDTO or an error message
+     */
     public ResponseEntity<?> getUserById(long userId) {
         try {
             UserEntity userEntity = userRepository.findById(String.valueOf(userId)).orElse(null);
@@ -54,6 +66,13 @@ public class UserService {
         }
     }
 
+    /**
+     * Updates the username of a user.
+     *
+     * @param userId   The ID of the user to update
+     * @param username The new username for the user
+     * @return ResponseEntity containing a success message or an error message
+     */
     public ResponseEntity<String> updateUserUsername(long userId, String username) {
         try {
             UserEntity user = userRepository.findById(String.valueOf(userId)).orElse(null);
@@ -69,6 +88,13 @@ public class UserService {
         }
     }
 
+    /**
+     * Updates the score of a user.
+     *
+     * @param userId The ID of the user to update
+     * @param score  The new score for the user
+     * @return ResponseEntity containing a success message or an error message
+     */
     public ResponseEntity<String> updateUserScore(long userId, int score) {
         try {
             UserEntity user = userRepository.findById(String.valueOf(userId)).orElse(null);
@@ -84,6 +110,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Deletes a user by their ID.
+     *
+     * @param userId The ID of the user to delete
+     * @return ResponseEntity containing a success message or an error message
+     */
     public ResponseEntity<String> deleteUserById(long userId) {
         try {
             UserEntity userEntity = userRepository.findById(String.valueOf(userId)).orElse(null);
@@ -98,6 +130,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Retrieves a sorted list of users by score in descending order.
+     *
+     * @return ResponseEntity containing a list of UserDTO or an error message
+     */
     public ResponseEntity<?> sortUsersScore() {
         try {
             List<UserEntity> userEntities = userRepository.findByScoreGreaterThanOrderByScoreDesc(0);
@@ -108,6 +145,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Converts a UserEntity Object to a UserDTO object.
+     *
+     * @param userEntity The UserEntity to convert
+     * @return The converted UserDTO object
+     */
     private UserDTO convertToDTO(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userEntity.getId());
@@ -116,6 +159,12 @@ public class UserService {
         return userDTO;
     }
 
+    /**
+     * Converts a list of UserEntity objects to a list of UserDTO objects.
+     *
+     * @param userEntities The list of UserEntity objects to convert
+     * @return The converted list of UserDTO objects
+     */
     private List<UserDTO> covertToDtoList(List<UserEntity> userEntities) {
         List<UserDTO> dtoList = new ArrayList<>();
         for (UserEntity userEntity : userEntities) {

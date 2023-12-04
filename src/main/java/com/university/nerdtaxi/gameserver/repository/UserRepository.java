@@ -9,5 +9,9 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
+    /**
+     * Retrieves a list of UserEntity objects with a score greater than the specified score,
+     * order by score in descending order.
+     */
     List<UserEntity> findByScoreGreaterThanOrderByScoreDesc(int score);
 }
