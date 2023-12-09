@@ -11,7 +11,7 @@ public class UpdateUsernameResponse {
     /**
      * Constructs a new UpdateUsernameResponse with the specified user ID and username.
      *
-     * @param userId The ID of the user whose usernaem was updated
+     * @param userId The ID of the user whose username was updated
      * @param username The new username value
      */
     public UpdateUsernameResponse(long userId, String username) {
