@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 // Generate setters and getters for all fields automatically
 @Getter
@@ -30,10 +29,5 @@ public class UserEntity {
     private String password;
     // The score of the user
     private int score;
-
-    public void setPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
-    }
 
 }
